@@ -7,10 +7,10 @@ from .views import (
     ShowPost,
     AddPage,
     about,
-    contact,
-    login,
+    ContactFormView,
+    LoginUser,
     logout_user,
-    register,
+    RegisterUser,
 )
 
 urlpatterns = [
@@ -20,13 +20,13 @@ urlpatterns = [
 
     path('addpage/', AddPage.as_view(), name='add_page'),
 
-    path('login/', login, name='login'),
+    path('login/', LoginUser.as_view(), name='login'),
 
-    path('register/', register, name='register'),
+    path('register/', RegisterUser.as_view(), name='register'),
 
     path('logout/', logout_user, name='logout'),
 
-    path('contact/', contact, name='contact'),
+    path('contact/', ContactFormView.as_view(), name='contact'),
 
     path('post/<slug:post_slug>', ShowPost.as_view(), name='post'),
 
