@@ -2,30 +2,33 @@ from django.urls import path
 
 
 from .views import (
-    index,
-    show_category,
+    WomenHome,
+    WomenCategory,
+    ShowPost,
+    AddPage,
     about,
-    addpage,
     contact,
     login,
-    show_post,
     logout_user,
+    register,
 )
 
 urlpatterns = [
-    path('', index, name='home'),
+    path('', WomenHome.as_view(), name='home'),
 
     path('about/', about, name='about'),
 
-    path('addpage/', addpage, name='add_page'),
+    path('addpage/', AddPage.as_view(), name='add_page'),
 
     path('login/', login, name='login'),
+
+    path('register/', register, name='register'),
 
     path('logout/', logout_user, name='logout'),
 
     path('contact/', contact, name='contact'),
 
-    path('post/<slug:post_slug>', show_post, name='post'),
+    path('post/<slug:post_slug>', ShowPost.as_view(), name='post'),
 
-    path('cats/<int:cat_id>/', show_category, name='category'),
+    path('cats/<int:cat_id>/', WomenCategory.as_view(), name='category'),
 ]
