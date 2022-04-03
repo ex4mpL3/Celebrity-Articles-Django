@@ -4,14 +4,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout, login
 from django.http import HttpResponseNotFound
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, FormView
+from django.views import generic
 
-from .forms import AddPostForm, ContactForm, RegisterUserForm, LoginUserForm
-from .models import Women, Category
-from .utils import DataMixin
+from women import forms
+from women.models import Women, Category
+from women.utils import DataMixin
 
 
-class WomenHome(DataMixin, ListView):
+class WomenHome(DataMixin, generic.ListView):
     model = Women
     template_name = 'women/index.html'
     context_object_name = 'posts'
@@ -33,8 +33,8 @@ def about(request):
     return render(request, 'women/about.html', context)
 
 
-class AddPage(LoginRequiredMixin, DataMixin, CreateView):
-    form_class = AddPostForm
+class AddPage(LoginRequiredMixin, DataMixin, generic.CreateView):
+    form_class = forms.AddPostForm
     template_name = 'women/addpage.html'
     success_url = reverse_lazy('home')  # if there is no get_absolute_url in the model,
     # we specify where to redirect when adding a new record
@@ -46,8 +46,8 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
         return context
 
 
-class ContactFormView(DataMixin, FormView):
-    form_class = ContactForm
+class ContactFormView(DataMixin, generic.FormView):
+    form_class = forms.ContactForm
     template_name = 'women/contact.html'
     success_url = reverse_lazy('home')
 
@@ -62,7 +62,7 @@ class ContactFormView(DataMixin, FormView):
 
 
 class LoginUser(DataMixin, LoginView):
-    form_class = LoginUserForm
+    form_class = forms.LoginUserForm
     template_name = 'women/login.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -75,8 +75,8 @@ class LoginUser(DataMixin, LoginView):
         return reverse_lazy('home')
 
 
-class RegisterUser(DataMixin, CreateView):
-    form_class = RegisterUserForm
+class RegisterUser(DataMixin, generic.CreateView):
+    form_class = forms.RegisterUserForm
     template_name = 'women/register.html'
     success_url = reverse_lazy('login')
 
@@ -92,7 +92,7 @@ class RegisterUser(DataMixin, CreateView):
         return redirect('home')
 
 
-class ShowPost(DataMixin, DetailView):
+class ShowPost(DataMixin, generic.DetailView):
     model = Women
     template_name = 'women/post.html'
     slug_url_kwarg = 'post_slug'
@@ -105,7 +105,7 @@ class ShowPost(DataMixin, DetailView):
         return context
 
 
-class WomenCategory(DataMixin,ListView):
+class WomenCategory(DataMixin, generic.ListView):
     model = Women
     template_name = 'women/index.html'
     context_object_name = 'posts'
